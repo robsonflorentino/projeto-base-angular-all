@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="cielo-televendas-web" basedir="." default="deploy.view">
+	<property file="deploy.properties" />
+	<property name="deploy.dir" value="${jboss.home}/standalone/deployments" />
+	<property name="src.dir" value="${basedir}/src/main/webapp" />
+	<property name="deploy.final.name" value="${project.artifactId}.war" />
+
+	<target name="undeploy.view" description="Apaga o .war no diretorio de deploy">
+		<delete dir="${deploy.dir}/${deploy.final.name}" />
+		<delete>
+			<fileset dir="${deploy.dir}" includes="${deploy.final.name}.*" />
+		</delete>
+	</target>
+
+	<target name="deploy.view" depends="undeploy.view" description="Faz deploy">
+		<copy todir="${deploy.dir}/${deploy.final.name}" overwrite="false">
+			<fileset dir="${basedir}/target/${project.artifactId}" />
+		</copy>
+		<touch file="${deploy.dir}/${deploy.final.name}.dodeploy" />
+	</target>
+
+	<target name="deploy.view.exploded" description="Faz deploy explodido">
+		<copy todir="${deploy.dir}/${deploy.final.name}" overwrite="false">
+			<fileset dir="${src.dir}" />
+		</copy>
+	</target>
+
+	<target name="deploy.view.modify.files" description="Faz o deploy do view explodido mas somente dos arquivos modificados">
+		<copy todir="${deploy.dir}/${deploy.final.name}" overwrite="false">
+			<fileset dir="${src.dir}" />
+		</copy>
+	</target>
+</project>
